@@ -1,6 +1,8 @@
 int pinVal1 = A5;
 int pinVal2 = A4;
 int pinVal3 = A3;
+int pinVal4 = A2;
+int pinVal5 = A1;
 
 int myPins[] = {pinVal1, pinVal2, pinVal3};
 
