@@ -3,8 +3,9 @@ int pinVal2 = A4;
 int pinVal3 = A3;
 int pinVal4 = A2;
 int pinVal5 = A1;
+int pinVal6 = A0;
 
-int myPins[] = {pinVal1, pinVal2, pinVal3};
+int myPins[] = {pinVal1, pinVal2, pinVal3, pinVal4, pinVal5, pinVal6};
 
 void setup() {
   pinMode(pinVal1, INPUT);
@@ -29,8 +30,11 @@ int getChanged() {
   }
   if (smallestNumber >= 100) {
     return 0;
+  } else if (smallestNumber <= -20) {
+    return 0;
   } else {
     return smallestNumber;
   }
 }
+
 
