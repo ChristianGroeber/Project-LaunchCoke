@@ -2,6 +2,8 @@ int pinVal1 = A5;
 int pinVal2 = A4;
 int pinVal3 = A3;
 
+int myPins[] = {pinVal1, pinVal2, pinVal3};
+
 void setup() {
   pinMode(pinVal1, INPUT);
   pinMode(pinVal2, INPUT);
@@ -11,25 +13,22 @@ void setup() {
 }
 
 void loop() {
-  int pressed = 0;
-    if(analogRead(pinVal1) == 0){
-      Serial.println("Dose 1");
-      digitalWrite(2, LOW);
-    }else if(analogRead(pinVal2) == 0){
-      Serial.println("Dose 2");
-      digitalWrite(2, LOW);
-    }else if(analogRead(pinVal3) == 0){
-      Serial.println("Dose 3");
-      digitalWrite(2, LOW);
-    }else{
-      digitalWrite(2, HIGH);
-    }
-
-//  Serial.print("1: ");
-//  Serial.println(analogRead(A5));
-//  Serial.print("2: ");
-//  Serial.println(analogRead(A4));
-//  Serial.print("3: ");
-//  Serial.println(analogRead(A3));
-//  delay(1000);
+  Serial.println(getChanged());
+  delay(100);
 }
+
+int getChanged() {
+  //get smallest number
+  int smallestNumber = 100;
+  for (int i = 0; i < sizeof(myPins); i++) {
+    if ((analogRead(myPins[i]) / 2) < analogRead(smallestNumber)) {
+      smallestNumber = myPins[i];
+    }
+  }
+  if (smallestNumber >= 100) {
+    return 0;
+  } else {
+    return smallestNumber;
+  }
+}
+
