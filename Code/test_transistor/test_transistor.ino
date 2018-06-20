@@ -1,10 +1,12 @@
-int pinVal1 = A5;
-int pinVal2 = A4;
-int pinVal3 = A3;
-int pinVal4 = A2;
-int pinVal5 = A1;
+int pinVal1 = A0;
+int pinVal2 = A1;
+int pinVal3 = A2;
+int pinVal4 = A3;
+int pinVal5 = A4;
+int pinVal6 = A5;
+int pinVal7 = A6;
 
-int myPins[] = {pinVal1, pinVal2, pinVal3, pinVal4, pinVal5};
+int myPins[] = {pinVal1, pinVal2, pinVal3, pinVal4, pinVal5, pinVal6, pinVal7};
 
 #include "pitches.h";
 
@@ -22,14 +24,14 @@ void setup() {
   pinMode(pinVal3, INPUT);
   pinMode(pinVal4, INPUT);
   pinMode(pinVal5, INPUT);
-  pinMode(A0, INPUT);
-  pinMode(2, OUTPUT);
+  pinMode(pinVal6, INPUT);
+  pinMode(pinVal7, INPUT);
+  pinMode(A7, INPUT);
   Serial.begin(9600);
 }
 
 void loop() {
-  Serial.print("Playing: ");
-  Serial.println(getTone());
+  Serial.println(getChanged());
   delay(100);
 }
 
