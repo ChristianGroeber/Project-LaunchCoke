@@ -1,14 +1,16 @@
-int pinVal1 = A0;
-int pinVal2 = A1;
-int pinVal3 = A2;
-int pinVal4 = A3;
-int pinVal5 = A4;
-int pinVal6 = A5;
-int pinVal7 = A6;
+int pinVal1 = 14;
+int pinVal2 = 15;
+int pinVal3 = 16;
+int pinVal4 = 17;
+int pinVal5 = 18;
+int pinVal6 = 19;
+int pinVal7 = 20;
 
 int myPins[] = {pinVal1, pinVal2, pinVal3, pinVal4, pinVal5, pinVal6, pinVal7};
 
 #include "pitches.h";
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 int h1[] = {C1, D1, E1, F1, G1, A1, B1};
 int h2[] = {C2, D2, E2, F2, G2, A2, B2};
@@ -21,28 +23,42 @@ int h7[] = {C7, D7, E7, F7, G7, A7, B7};
 int tones[] = {h1, h2, h3, h4, h5, h6, h7};
 
 void setup() {
-  pinMode(pinVal1, INPUT);
-  pinMode(pinVal2, INPUT);
-  pinMode(pinVal3, INPUT);
-  pinMode(pinVal4, INPUT);
-  pinMode(pinVal5, INPUT);
-  pinMode(pinVal6, INPUT);
-  pinMode(pinVal7, INPUT);
-  pinMode(A7, INPUT);
+  //  pinMode(pinVal1, INPUT);
+  //  pinMode(pinVal2, INPUT);
+  //  pinMode(pinVal3, INPUT);
+  //  pinMode(pinVal4, INPUT);
+  //  pinMode(pinVal5, INPUT);
+  //  pinMode(pinVal6, INPUT);
+  //  pinMode(pinVal7, INPUT);
+  //  pinMode(A7, INPUT);
   Serial.begin(9600);
+
+  // set up the LCD's number of columns and rows:
+  lcd.begin(16, 2);
+  // Print a message to the LCD.
+  lcd.print("hello, world!");
 }
 
+int lastToneHeightPlayed = 0;
 void loop() {
-  Serial.println(getChanged());
-  int toneToPlay[] = {tones[getTone()]};
-  if (getChanged != 0) {
-    tone(1 /*DigitalPin*/, toneToPlay[getChanged() - 14], 100);
+  if (lastToneHeightPlayed != getTone()) {
+    lastToneHeightPlayed = getTone();
+    lcd.clear();
+    lcd.print("Tonhoehe: ");
+    lcd.println(lastToneHeightPlayed);
   }
+  int toneToPlay[] = {tones[getTone()]};
+  Serial.println(getChanged());
+  if (getChanged() != 0) {
+    int playingTone = toneToPlay[getChanged() - 14];
+    tone(8 /*DigitalPin*/, playingTone, 100);
+  }
+  delay(100);
 }
 
 int getTone() {
-  int anRead = analogRead(A0);
-  if (anRead >= 60 && anRead <= 195) {
+  int anRead = analogRead(21);
+  if (anRead >= 0 && anRead <= 195) {
     return 0;
   } else if (anRead > 195 && anRead <= 330) {
     return 1;
@@ -54,7 +70,7 @@ int getTone() {
     return 4;
   } else if (anRead > 735 && anRead <= 870) {
     return 5;
-  } else if (anRead > 870 && anRead <= 1020) {
+  } else if (anRead > 870 && anRead <= 1100) {
     return 6;
   }
 }
