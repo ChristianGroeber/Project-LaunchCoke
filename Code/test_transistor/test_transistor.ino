@@ -9,8 +9,11 @@ int pinVal7 = 20;
 int myPins[] = {pinVal1, pinVal2, pinVal3, pinVal4, pinVal5, pinVal6, pinVal7};
 
 #include "pitches.h";
+
+//Kopiert von https://www.arduino.cc/en/Tutorial/LiquidCrystalDisplay________________
 #include <LiquidCrystal.h>
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+//___________________________________________________________________________________
 
 int h1[] = {C1, D1, E1, F1, G1, A1, B1};
 int h2[] = {C2, D2, E2, F2, G2, A2, B2};
@@ -23,20 +26,9 @@ int h7[] = {C7, D7, E7, F7, G7, A7, B7};
 int tones[] = {h1, h2, h3, h4, h5, h6, h7};
 
 void setup() {
-  //  pinMode(pinVal1, INPUT);
-  //  pinMode(pinVal2, INPUT);
-  //  pinMode(pinVal3, INPUT);
-  //  pinMode(pinVal4, INPUT);
-  //  pinMode(pinVal5, INPUT);
-  //  pinMode(pinVal6, INPUT);
-  //  pinMode(pinVal7, INPUT);
-  //  pinMode(A7, INPUT);
   Serial.begin(9600);
-
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
-  // Print a message to the LCD.
-  lcd.print("hello, world!");
 }
 
 int lastToneHeightPlayed = 0;
@@ -46,14 +38,16 @@ void loop() {
     lcd.clear();
     lcd.print("Tonhoehe: ");
     lcd.println(lastToneHeightPlayed);
+    Serial.print(lastToneHeightPlayed);
   }
-  int toneToPlay[] = {tones[getTone()]};
   Serial.println(getChanged());
+  int toneToPlay[] = {tones[getTone()]};
   if (getChanged() != 0) {
     int playingTone = toneToPlay[getChanged() - 14];
     tone(8 /*DigitalPin*/, playingTone, 100);
+    Serial.println(playingTone);
   }
-  delay(100);
+  //  Serial.println(getChanged());
 }
 
 int getTone() {
