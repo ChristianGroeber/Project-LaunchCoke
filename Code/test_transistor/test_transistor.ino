@@ -1,4 +1,4 @@
-int myPins[] = {14, 15, 16, 17, 18, 19, 20};
+int myPins[7] = {14, 15, 16, 17, 18, 19, 20};
 
 void setup() {
   // put your setup code here, to run once:
@@ -10,7 +10,12 @@ void loop() {
   if(getChanged() != 0){
     Serial.println(getChanged());
   }
-  delay(100);
+  for(int i = 0; i < 7; i++){
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.println(analogRead(myPins[i]));
+  }
+  delay(1000);
 }
 
 int getChanged(){
