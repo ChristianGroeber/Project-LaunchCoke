@@ -34,45 +34,176 @@ int lastToneHeightPlayed = 0;                   //die zuletzt gespielte Höhe
 void loop() {
   if (lastToneHeightPlayed != getTone()) {      //Wenn die zuletzt gespielte Höhe sich von der neuen unterscheidet (Der Potentiometer gedreht wurde)
     lastToneHeightPlayed = getTone();           //Wird die Höhe angepasst.
-    String toPrint = "Tonhoehe: ";        
+    String toPrint = "Tonhoehe: ";
     toPrint += lastToneHeightPlayed;            //Was auf dem Bildschirm ausgegeben wird
     lcd.clear();   //Den LCD clearen
     lcd.println(toPrint);                       //Auf dem Bildschirm ausgeben
     Serial.println(toPrint);                    //Auf dem Serial Monitor ausgeben
   }
-  int toneToPlay = getTone();                   //Der zu spielende Ton
-  switch (toneToPlay) {
-    case 0:             //die tiefste Höhe
-      playSound(h1);
-      break;
-    case 1:
-      playSound(h2);
-      break;
-    case 2:
-      playSound(h3);
-      break;
-    case 3:
-      playSound(h4);
-      break;
-    case 4:
-      playSound(h5);
-      break;
-    case 5:
-      playSound(h6);
-      break;
-    case 6:            //die höchste Höhe
-      playSound(h7);
-      break;
+  int toneToPlay = getTone();                   //Die zu spielende Tonhöhe
+  int changed = getChanged();                   //Der zu spielende Ton
+  if (changed != 0) {
+    switch (toneToPlay) {
+      case 0:             //die tiefste Höhe
+        switch (changed) {
+          case 14:
+            playSound(C1);
+            break;
+          case 15:
+            playSound(D1);
+            break;
+          case 16:
+            playSound(E1);
+            break;
+          case 17:
+            playSound(F1);
+            break;
+          case 18:
+            playSound(G1);
+            break;
+          case 19:
+            playSound(A1);
+            break;
+          case 20:
+            playSound(B1);
+            break;
+        }
+        break;
+      case 1:
+        playSound(h2);
+        break;
+      case 2:
+        switch (changed) {
+          case 14:
+            playSound(C2);
+            break;
+          case 15:
+            playSound(D2);
+            break;
+          case 16:
+            playSound(E2);
+            break;
+          case 17:
+            playSound(F2);
+            break;
+          case 18:
+            playSound(G2);
+            break;
+          case 19:
+            playSound(A2);
+            break;
+          case 20:
+            playSound(B2);
+            break;
+        }
+        break;
+      case 3:
+        switch (changed) {
+          case 14:
+            playSound(C3);
+            break;
+          case 15:
+            playSound(D3);
+            break;
+          case 16:
+            playSound(E3);
+            break;
+          case 17:
+            playSound(F3);
+            break;
+          case 18:
+            playSound(G3);
+            break;
+          case 19:
+            playSound(A3);
+            break;
+          case 20:
+            playSound(B3);
+            break;
+        }
+        break;
+      case 4:
+        switch (changed) {
+          case 14:
+            playSound(C4);
+            break;
+          case 15:
+            playSound(D4);
+            break;
+          case 16:
+            playSound(E4);
+            break;
+          case 17:
+            playSound(F4);
+            break;
+          case 18:
+            playSound(G4);
+            break;
+          case 19:
+            playSound(A4);
+            break;
+          case 20:
+            playSound(B4);
+            break;
+        }
+        break;
+      case 5:
+        switch (changed) {
+          case 14:
+            playSound(C5);
+            break;
+          case 15:
+            playSound(D5);
+            break;
+          case 16:
+            playSound(E5);
+            break;
+          case 17:
+            playSound(F5);
+            break;
+          case 18:
+            playSound(G5);
+            break;
+          case 19:
+            playSound(A5);
+            break;
+          case 20:
+            playSound(B5);
+            break;
+        }
+        break;
+      case 6:            //die höchste Höhe
+        switch (changed) {
+          case 14:
+            playSound(C6);
+            break;
+          case 15:
+            playSound(D6);
+            break;
+          case 16:
+            playSound(E6);
+            break;
+          case 17:
+            playSound(F6);
+            break;
+          case 18:
+            playSound(G6);
+            break;
+          case 19:
+            playSound(A6);
+            break;
+          case 20:
+            playSound(B6);
+            break;
+        }
+        break;
+    }
   }
 }
 
-void playSound(int toPlay[]) {                  //übergeben wird die Tonleiter mit der Tonhöhe
-  int changed = getChanged();                   //Die angefasste Dose (funktioniert nicht richtig, wird random getriggert
-  if (changed != 0) {                           //0 bedeuted es soll kein Ton gespielt werden
-    int playingTone = toPlay[changed - 14];     //der zu spielende Ton wird in einer Variablen gespeichert
-    tone(8 /*DigitalPin*/, playingTone, 100);   //das Spielen des Tones (auf DigitalPin 8)
-    Serial.println(playingTone);                //Debugging
-  }
+void playSound(int toPlay) {                    //übergeben wird der zu spielende Ton
+  tone(8 /*DigitalPin*/, toPlay, 100);          //das Spielen des Tones (auf DigitalPin 8)
+  Serial.println(toPlay);                       //Debugging
 }
 
 int getTone() {                                 //Die zu spielende Tonhöhe wird mit dieser Methode ermittelt
@@ -95,7 +226,7 @@ int getTone() {                                 //Die zu spielende Tonhöhe wird
 }
 
 int getChanged() {                              //diese Methode ermittelt die angefasste Dose
-  //get smallest number   
+  //get smallest number
   int ret = 0;                                  //der Wert, der am Ende zurückgegeben wird. Standardmässig ist dieser 0
   for (int i = 0; i < sizeof(myPins); i++) {    //durch alle Pins durchiterieren
     if ((analogRead(myPins[i])) < 5) {          //Wenn die Dose an der Stelle i angefasst wurde (der Wert des dazugehörigen AnalogPins kleiner 5 ist)
