@@ -35,21 +35,45 @@ int lastToneHeightPlayed = 0;
 void loop() {
   if (lastToneHeightPlayed != getTone()) {
     lastToneHeightPlayed = getTone();
+    String toPrint = "Tonhoehe: ";
+    toPrint += lastToneHeightPlayed;
     lcd.clear();
-    lcd.print("Tonhoehe: ");
-    lcd.println(lastToneHeightPlayed);
-    Serial.print(lastToneHeightPlayed);
+    lcd.println(toPrint);
+    Serial.println(toPrint);
   }
-  int toneToPlay[] = {tones[getTone()]};
+  int toneToPlay = getTone();
+  switch (toneToPlay) {
+    case 0:
+      playSound(h1);
+      break;
+    case 1:
+      playSound(h2);
+      break;
+    case 2:
+      playSound(h3);
+      break;
+    case 3:
+      playSound(h4);
+      break;
+    case 4:
+      playSound(h5);
+      break;
+    case 5:
+      playSound(h6);
+      break;
+    case 6:
+      playSound(h7);
+      break;
+  }
+}
+
+void playSound(int toPlay[]) {
   int changed = getChanged();
   if (changed != 0) {
-  Serial.println(changed);
-    int playingTone = toneToPlay[changed - 14];
-//    Serial.println(toneToPlay[changed - 14]);
+    int playingTone = toPlay[changed - 14];
     tone(8 /*DigitalPin*/, playingTone, 100);
-//    Serial.println(playingTone);
+    Serial.println(playingTone);
   }
-  //  Serial.println(getChanged());
 }
 
 int getTone() {
@@ -73,19 +97,18 @@ int getTone() {
 
 int getChanged() {
   //get smallest number
-  int smallestNumber = 100;
+  int ret = 0;
   for (int i = 0; i < sizeof(myPins); i++) {
-    if ((analogRead(myPins[i]) / 2) < analogRead(smallestNumber)) {
-      smallestNumber = myPins[i];
+    if ((analogRead(myPins[i])) < 10) {
+      ret = myPins[i];
     }
   }
-  if (smallestNumber >= 100) {
-    return 0;
-  } else if (smallestNumber <= -20) {
-    return 0;
-  } else {
-    return smallestNumber;
+  if (ret < 0) {
+    ret = 0;
+  } else if (ret > 25) {
+    ret = 0;
   }
+  return ret;
 }
 
 
