@@ -40,12 +40,14 @@ void loop() {
     lcd.println(lastToneHeightPlayed);
     Serial.print(lastToneHeightPlayed);
   }
-  Serial.println(getChanged());
   int toneToPlay[] = {tones[getTone()]};
-  if (getChanged() != 0) {
-    int playingTone = toneToPlay[getChanged() - 14];
+  int changed = getChanged();
+  if (changed != 0) {
+  Serial.println(changed);
+    int playingTone = toneToPlay[changed - 14];
+//    Serial.println(toneToPlay[changed - 14]);
     tone(8 /*DigitalPin*/, playingTone, 100);
-    Serial.println(playingTone);
+//    Serial.println(playingTone);
   }
   //  Serial.println(getChanged());
 }
