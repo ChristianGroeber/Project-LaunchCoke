@@ -42,6 +42,7 @@ void loop() {
   }
   int toneToPlay = getTone();                   //Die zu spielende Tonhöhe
   int changed = getChanged();                   //Der zu spielende Ton
+  delay(10);
   if (changed != 0) {
     switch (toneToPlay) {
       case 0:             //die tiefste Höhe
