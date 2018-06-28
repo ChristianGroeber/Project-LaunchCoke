@@ -208,7 +208,7 @@ void playSound(int toPlay) {                    //übergeben wird der zu spielen
 }
 
 int getTone() {                                 //Die zu spielende Tonhöhe wird mit dieser Methode ermittelt
-  int anRead = analogRead(21);                  //das Resultat vom AnalogPin A7, Range: 0 - 1023
+  int anRead = analogRead(19);                  //das Resultat vom AnalogPin A7, Range: 0 - 1023
   if (anRead >= 0 && anRead <= 195) {           //Wenn der Wert zwischen 0 und 195 liegt
     return 0;                                   //Wird die 0. Tonleiter gespielt
   } else if (anRead > 195 && anRead <= 330) {   //Wenn der Wert zwischen 195 und 330 liegt
@@ -229,10 +229,16 @@ int getTone() {                                 //Die zu spielende Tonhöhe wird
 int getChanged() {                              //diese Methode ermittelt die angefasste Dose
   //get smallest number
   int ret = 0;                                  //der Wert, der am Ende zurückgegeben wird. Standardmässig ist dieser 0
-  for (int i = 0; i < sizeof(myPins); i++) {    //durch alle Pins durchiterieren
-    if ((analogRead(myPins[i])) < 5) {          //Wenn die Dose an der Stelle i angefasst wurde (der Wert des dazugehörigen AnalogPins kleiner 5 ist)
-      ret = myPins[i];                          //wird dieser Pin zurückgegeben
-    }
+  if((analogRead(14)) < 10){
+    ret = 14;
+  }else if((analogRead(15)) < 10){
+    ret = 15;
+  }else if((analogRead(16)) < 10){
+    ret = 10;
+  }else if((analogRead(17)) < 10){
+    ret = 17;
+  }else if((analogRead(18)) < 10){
+    ret = 18;
   }
   if (ret < 0) {                                //Manchmal gibt einer der Pins einen negativen Wert zurück, dieser kann jedoch nicht ausgewertet werden
     ret = 0;                                    //also wird einfach 0 zurück gegeben
