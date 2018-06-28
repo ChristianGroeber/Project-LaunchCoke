@@ -31,7 +31,7 @@ int getChanged(){
   }else if((analogRead(15)) < 10){
     ret = 15;
   }else if((analogRead(16)) < 10){
-    ret = 10;
+    ret = 16;
   }else if((analogRead(17)) < 10){
     ret = 17;
   }else if((analogRead(18)) < 10){
