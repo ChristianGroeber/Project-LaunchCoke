@@ -19,5 +19,5 @@ void loop() {
   initialPosition = initialPosition + toAdd;
   myServo.write(initialPosition);
   Serial.println(initialPosition);
-  delay(500);
+  delay(100);
 }
