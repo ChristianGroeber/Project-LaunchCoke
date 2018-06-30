@@ -1,3 +1,6 @@
+#include <ShiftOutX.h>
+#include <ShiftPinNo.h>
+
 int pinVal1 = 14;
 int pinVal2 = 15;
 int pinVal3 = 16;
@@ -11,7 +14,7 @@ int laserPin = 6;
   int myPins[] = {pinVal1, pinVal2, pinVal3, pinVal4, pinVal5};
 **/
 
-#include "pitches.h";
+//#include "pitches.h"
 #include <Servo.h>
 Servo myServo;
 
@@ -44,6 +47,8 @@ void setup() {
 
 int lastToneHeightPlayed = 0;                   //die zuletzt gespielte Höhe
 void loop() {
+    partyTime();
+    delay(100);
   if (lastToneHeightPlayed != getTone()) {      //Wenn die zuletzt gespielte Höhe sich von der neuen unterscheidet (Der Potentiometer gedreht wurde)
     lastToneHeightPlayed = getTone();           //Wird die Höhe angepasst.
     String toPrint = "Tonhoehe: ";
@@ -57,162 +62,10 @@ void loop() {
   delay(10);
   if (changed != 0) {
     doDaDance(changed);
-    switch (toneToPlay) {
-      case 0:             //die tiefste Höhe
-        switch (changed) {
-          case 14:
-            playSound(C1);
-            break;
-          case 15:
-            playSound(D1);
-            break;
-          case 16:
-            playSound(E1);
-            break;
-          case 17:
-            playSound(F1);
-            break;
-          case 18:
-            playSound(G1);
-            break;
-          case 19:
-            playSound(A1);
-            break;
-          case 20:
-            playSound(B1);
-            break;
-        }
-        break;
-      case 1:
-        break;
-      case 2:
-        switch (changed) {
-          case 14:
-            playSound(C2);
-            break;
-          case 15:
-            playSound(D2);
-            break;
-          case 16:
-            playSound(E2);
-            break;
-          case 17:
-            playSound(F2);
-            break;
-          case 18:
-            playSound(G2);
-            break;
-          case 19:
-            playSound(A2);
-            break;
-          case 20:
-            playSound(B2);
-            break;
-        }
-        break;
-      case 3:
-        switch (changed) {
-          case 14:
-            playSound(C3);
-            break;
-          case 15:
-            playSound(D3);
-            break;
-          case 16:
-            playSound(E3);
-            break;
-          case 17:
-            playSound(F3);
-            break;
-          case 18:
-            playSound(G3);
-            break;
-          case 19:
-            playSound(A3);
-            break;
-          case 20:
-            playSound(B3);
-            break;
-        }
-        break;
-      case 4:
-        switch (changed) {
-          case 14:
-            playSound(C4);
-            break;
-          case 15:
-            playSound(D4);
-            break;
-          case 16:
-            playSound(E4);
-            break;
-          case 17:
-            playSound(F4);
-            break;
-          case 18:
-            playSound(G4);
-            break;
-          case 19:
-            playSound(A4);
-            break;
-          case 20:
-            playSound(B4);
-            break;
-        }
-        break;
-      case 5:
-        switch (changed) {
-          case 14:
-            playSound(C5);
-            break;
-          case 15:
-            playSound(D5);
-            break;
-          case 16:
-            playSound(E5);
-            break;
-          case 17:
-            playSound(F5);
-            break;
-          case 18:
-            playSound(G5);
-            break;
-          case 19:
-            playSound(A5);
-            break;
-          case 20:
-            playSound(B5);
-            break;
-        }
-        break;
-      case 6:            //die höchste Höhe
-        switch (changed) {
-          case 14:
-            playSound(C6);
-            break;
-          case 15:
-            playSound(D6);
-            break;
-          case 16:
-            playSound(E6);
-            break;
-          case 17:
-            playSound(F6);
-            break;
-          case 18:
-            playSound(G6);
-            break;
-          case 19:
-            playSound(A6);
-            break;
-          case 20:
-            playSound(B6);
-            break;
-        }
-        break;
-    }
+    tone(5, spielen(changed, toneToPlay), 100);
   }
 }
+
 
 void doDaDance(int changed) {
   digitalWrite(laserPin, HIGH);
@@ -234,9 +87,13 @@ void doDaDance(int changed) {
   }
 }
 
-void playSound(int toPlay) {                    //übergeben wird der zu spielende Ton
-  tone(8 /*DigitalPin*/, toPlay, 100);          //das Spielen des Tones (auf DigitalPin 8)
-  Serial.println(toPlay);                       //Debugging
+shiftOutX party(8, 11, 12, MSBFIRST, 4);
+void partyTime() {
+  party.pinOn(shPin1);
+  delay(1000);
+  party.pinOff(shPin1);
+  delay(1000);
+  party.pinOn(shPin2);
 }
 
 int getTone() {                                 //Die zu spielende Tonhöhe wird mit dieser Methode ermittelt
@@ -279,6 +136,163 @@ int getChanged() {                              //diese Methode ermittelt die an
   }
   return ret;                                   //rückgabe des geänderten Pins
 }
+
+int spielen(int changed, int toneToPlay) {
+  switch (toneToPlay) {
+    case 0:             //die tiefste Höhe
+      switch (changed) {
+        case 14:
+          return (33);
+          break;
+        case 15:
+          return (37);
+          break;
+        case 16:
+          return (41);
+          break;
+        case 17:
+          return (44);
+          break;
+        case 18:
+          return (49);
+          break;
+          //          case 19:
+          //            return(55);
+          //            break;
+          //          case 20:
+          //            return(62);
+          //            break;
+      }
+      break;
+    case 1:
+      break;
+    case 2:
+      switch (changed) {
+        case 14:
+          return (65);
+          break;
+        case 15:
+          return (73);
+          break;
+        case 16:
+          return (82);
+          break;
+        case 17:
+          return (87);
+          break;
+        case 18:
+          return (98);
+          break;
+          //          case 19:
+          //            return(A2);
+          //            break;
+          //          case 20:
+          //            return(B2);
+          //            break;
+      }
+      break;
+    case 3:
+      switch (changed) {
+        case 14:
+          return (131);
+          break;
+        case 15:
+          return (147);
+          break;
+        case 16:
+          return (156);
+          break;
+        case 17:
+          return (175);
+          break;
+        case 18:
+          return (196);
+          break;
+          //          case 19:
+          //            return(A3);
+          //            break;
+          //          case 20:
+          //            return(B3);
+          //            break;
+      }
+      break;
+    case 4:
+      switch (changed) {
+        case 14:
+          return (262);
+          break;
+        case 15:
+          return (294);
+          break;
+        case 16:
+          return (330);
+          break;
+        case 17:
+          return (349);
+          break;
+        case 18:
+          return (392);
+          break;
+          //          case 19:
+          //            return(A4);
+          //            break;
+          //          case 20:
+          //            return(B4);
+          //            break;
+      }
+      break;
+    case 5:
+      switch (changed) {
+        case 14:
+          return (523);
+          break;
+        case 15:
+          return (587);
+          break;
+        case 16:
+          return (659);
+          break;
+        case 17:
+          return (698);
+          break;
+        case 18:
+          return (784);
+          break;
+          //          case 19:
+          //            return(A5);
+          //            break;
+          //          case 20:
+          //            return(B5);
+          //            break;
+      }
+      break;
+    case 6:            //die höchste Höhe
+      switch (changed) {
+        case 14:
+          return (1047);
+          break;
+        case 15:
+          return (1175);
+          break;
+        case 16:
+          return (1319);
+          break;
+        case 17:
+          return (1397);
+          break;
+        case 18:
+          return (1568);
+          break;
+          //          case 19:
+          //            return(A6);
+          //            break;
+          //          case 20:
+          //            return(B6);
+          //            break;
+      }
+  }
+}
+
 
 
 
