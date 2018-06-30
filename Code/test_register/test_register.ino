@@ -33,39 +33,73 @@ shiftOutX regOne(8, 11, 12, MSBFIRST, 4);
 //so to access it you would do it like this
 //regOne._bitString = xx;
 
-void setup() {
-  Serial.begin(9600);
+int latchPin = 8;
+int clockPin = 12;
+int dataPin = 11;
+
+byte leds = 0;
+
+void setup()
+{
+  pinMode(latchPin, OUTPUT);
+  pinMode(dataPin, OUTPUT);
+  pinMode(clockPin, OUTPUT);
   pinMode(2, INPUT);
   pinMode(3, INPUT);
+  pinMode(4, INPUT);
+  pinMode(5, INPUT);
+  pinMode(6, INPUT);
+  pinMode(9, OUTPUT);
+  Serial.begin(9600);
 }
 
-void loop() {
-  int delayT = 1;
-  regOne.pinOn(shPin1);
-  printLinie();
-  delay(delayT);
-  regOne.pinOff(shPin1);
-  printLinie();
-  delay(delayT);
-  regOne.pinOn(shPin3);
-  printLinie();
-  delay(delayT);
-  regOne.pinOff(shPin3);
-  printLinie();
-  delay(delayT);
-}
+void loop()
+{
+  leds = 0;
+  updateShiftRegister();
+  digitalWrite(9, HIGH);
+  for (int i = 0; i < 8; i++)
+  {
+    Serial.print("In");
+    Serial.print(digitalRead(2));
+    Serial.print(digitalRead(3));
+    Serial.print(digitalRead(4));
+    Serial.print(digitalRead(5));
+    Serial.println(digitalRead(6));
+    bitSet(leds, i);
+    updateShiftRegister();
+    delay(100);
+    bitClear(leds, i);
+    updateShiftRegister();
 
-void printLinie() {
-//  Serial.print("2:");
-//  Serial.print(digitalRead(2));
-//  Serial.print(" ");
-//  Serial.print("3:");
-//  Serial.println(digitalRead(3));
-
-  if(digitalRead(2) == 1){
-    Serial.println("2");
-  }else if(digitalRead(3) == 1){
-    Serial.println("3");
   }
+  for (int y = 0; y < 8; y++)
+  {
+    Serial.print("Out");
+    Serial.print(digitalRead(2));
+    Serial.print(digitalRead(3));
+    Serial.print(digitalRead(4));
+    Serial.print(digitalRead(5));
+    Serial.println(digitalRead(6));
+    bitSet(leds, y);
+    updateShiftRegisterBack();
+    delay(100);
+    bitClear(leds, y);
+    updateShiftRegisterBack();
+  }
+}
+
+void updateShiftRegister()
+{
+  digitalWrite(latchPin, LOW);
+  shiftOut(dataPin, clockPin, MSBFIRST, leds);
+  digitalWrite(latchPin, HIGH);
+}
+
+void updateShiftRegisterBack()
+{
+  digitalWrite(latchPin, LOW);
+  shiftOut(dataPin, clockPin, LSBFIRST, leds);
+  digitalWrite(latchPin, HIGH);
 }
 
