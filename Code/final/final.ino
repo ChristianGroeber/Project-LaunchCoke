@@ -9,11 +9,6 @@ int pinVal5 = 18;
 
 int laserPin = 6;
 
-/**
-   Can probably be deleted
-  int myPins[] = {pinVal1, pinVal2, pinVal3, pinVal4, pinVal5};
-**/
-
 //#include "pitches.h"
 #include <Servo.h>
 Servo myServo;
@@ -25,41 +20,27 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 int pin2Servo[] = {0, 45, 90, 135, 180};
 
-
-/**
-   Can probably be deleted
-  //Alle unterschiedlichen Tonhöhen mitsamt ihren Tönen
-  int h1[] = {C1, D1, E1, F1, G1, A1, B1};
-  int h2[] = {C2, D2, E2, F2, G2, A2, B2};
-  int h3[] = {C3, D3, E3, F3, G3, A3, B3};
-  int h4[] = {C4, D4, E4, F4, G4, A4, B4};
-  int h5[] = {C5, D5, E5, F5, G5, A5, B5};
-  int h6[] = {C6, D6, E6, F6, G6, A6, B6};
-  int h7[] = {C7, D7, E7, F7, G7, A7, B7};
-**/
-
 void setup() {
-  Serial.begin(9600);
-  lcd.begin(16, 2);
-  myServo.attach(7);
-  pinMode(laserPin, OUTPUT);
+  Serial.begin(9600);                           //für Testzwecke wird anstelle des LCD's der Serielle Monitor verwendet
+  lcd.begin(16, 2);                             //Grösse des Display's festlegen
+  myServo.attach(7);                            //den Servo anhängen
+  pinMode(laserPin, OUTPUT);                    //der Laser Pin, auf digital Pin 6
 }
 
 int lastToneHeightPlayed = 0;                   //die zuletzt gespielte Höhe
 void loop() {
-    partyTime();
-    delay(100);
+//    partyTime();                              //wird nicht verwendet, da LED's nicht in Verwendung
   if (lastToneHeightPlayed != getTone()) {      //Wenn die zuletzt gespielte Höhe sich von der neuen unterscheidet (Der Potentiometer gedreht wurde)
     lastToneHeightPlayed = getTone();           //Wird die Höhe angepasst.
     String toPrint = "Tonhoehe: ";
     toPrint += lastToneHeightPlayed;            //Was auf dem Bildschirm ausgegeben wird
-    lcd.clear();   //Den LCD clearen
+    lcd.clear();                                //Den LCD clearen
     lcd.println(toPrint);                       //Auf dem Bildschirm ausgeben
     Serial.println(toPrint);                    //Auf dem Serial Monitor ausgeben
   }
+  
   int toneToPlay = getTone();                   //Die zu spielende Tonhöhe
   int changed = getChanged();                   //Der zu spielende Ton
-  delay(10);
   if (changed != 0) {
     doDaDance(changed);
     tone(5, spielen(changed, toneToPlay), 100);
@@ -87,13 +68,14 @@ void doDaDance(int changed) {
   }
 }
 
-shiftOutX party(8, 11, 12, MSBFIRST, 4);
+
+shiftOutX party(8, 11, 12, MSBFIRST, 4);        //Der Teil des Programmes, das die LED's an der Vorderseite zum leuchten bringen sollte.
 void partyTime() {
-  party.pinOn(shPin1);
-  delay(1000);
-  party.pinOff(shPin1);
-  delay(1000);
-  party.pinOn(shPin2);
+  party.pinOn(shPin1);                          //Der erste Pin des Shift Register's wird auf HIGH geschaltet
+  delay(1000);                                  //1 Sekunde warten
+  party.pinOff(shPin1);                         //Den vorherigen Pin wieder LOW schalten
+  delay(1000);                                  //1 Sekunde warten
+  party.pinOn(shPin2);                          //Pin 2 des Shift Register's HIGH nehmen
 }
 
 int getTone() {                                 //Die zu spielende Tonhöhe wird mit dieser Methode ermittelt
@@ -170,125 +152,70 @@ int spielen(int changed, int toneToPlay) {
       switch (changed) {
         case 14:
           return (65);
-          break;
         case 15:
           return (73);
-          break;
         case 16:
           return (82);
-          break;
         case 17:
           return (87);
-          break;
         case 18:
           return (98);
-          break;
-          //          case 19:
-          //            return(A2);
-          //            break;
-          //          case 20:
-          //            return(B2);
-          //            break;
       }
       break;
     case 3:
       switch (changed) {
         case 14:
           return (131);
-          break;
         case 15:
           return (147);
-          break;
         case 16:
           return (156);
-          break;
         case 17:
           return (175);
-          break;
         case 18:
           return (196);
-          break;
-          //          case 19:
-          //            return(A3);
-          //            break;
-          //          case 20:
-          //            return(B3);
-          //            break;
       }
       break;
     case 4:
       switch (changed) {
         case 14:
           return (262);
-          break;
         case 15:
           return (294);
-          break;
         case 16:
           return (330);
-          break;
         case 17:
           return (349);
-          break;
         case 18:
           return (392);
-          break;
-          //          case 19:
-          //            return(A4);
-          //            break;
-          //          case 20:
-          //            return(B4);
-          //            break;
       }
       break;
     case 5:
       switch (changed) {
         case 14:
           return (523);
-          break;
         case 15:
           return (587);
-          break;
         case 16:
           return (659);
-          break;
         case 17:
           return (698);
-          break;
         case 18:
           return (784);
-          break;
-          //          case 19:
-          //            return(A5);
-          //            break;
-          //          case 20:
-          //            return(B5);
-          //            break;
       }
       break;
     case 6:            //die höchste Höhe
       switch (changed) {
         case 14:
           return (1047);
-          break;
         case 15:
           return (1175);
-          break;
         case 16:
           return (1319);
-          break;
         case 17:
           return (1397);
-          break;
         case 18:
           return (1568);
-          break;
-          //          case 19:
-          //            return(A6);
-          //            break;
-          //          case 20:
-          //            return(B6);
-          //            break;
       }
   }
 }
