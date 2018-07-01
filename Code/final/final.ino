@@ -29,40 +29,43 @@ void setup() {
 
 int lastToneHeightPlayed = 0;                   //die zuletzt gespielte Höhe
 void loop() {
-//    partyTime();                              //wird nicht verwendet, da LED's nicht in Verwendung
+  //    partyTime();                              //wird nicht verwendet, da LED's nicht in Verwendung
   if (lastToneHeightPlayed != getTone()) {      //Wenn die zuletzt gespielte Höhe sich von der neuen unterscheidet (Der Potentiometer gedreht wurde)
     lastToneHeightPlayed = getTone();           //Wird die Höhe angepasst.
     String toPrint = "Tonhoehe: ";
     toPrint += lastToneHeightPlayed;            //Was auf dem Bildschirm ausgegeben wird
     lcd.clear();                                //Den LCD clearen
+    lcd.println("Lautsprecher");
     lcd.println(toPrint);                       //Auf dem Bildschirm ausgeben
+    Serial.println("Lautsprecher");
     Serial.println(toPrint);                    //Auf dem Serial Monitor ausgeben
   }
-  
+
   int toneToPlay = getTone();                   //Die zu spielende Tonhöhe
   int changed = getChanged();                   //Der zu spielende Ton
   if (changed != 0) {
-    doDaDance(changed);
-    tone(5, spielen(changed, toneToPlay), 100);
+    doDaDance(changed);                         //Den Servo drehen
+    tone(5, spielen(changed, toneToPlay), 100); //Den Ton spielen
   }
 }
 
 
-void doDaDance(int changed) {
-  digitalWrite(laserPin, HIGH);
-  switch (changed) {
-    case 14:
+void doDaDance(int changed) {                   //1A namensgebung ;)
+  digitalWrite(laserPin, HIGH);                 //den Laser an machen
+  switch (changed) {                            //die angetippte Aluminium Folie
+    case 18:
       myServo.write(0);
       break;
-    case 15:
+    case 17:
       myServo.write(45);
       break;
     case 16:
       myServo.write(90);
       break;
-    case 17:
+    case 15:
       myServo.write(135);
       break;
+    case 14:
       myServo.write(180);
       break;
   }
