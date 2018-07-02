@@ -8,6 +8,7 @@ int pinVal4 = 17;
 int pinVal5 = 18;
 
 int laserPin = 6;
+int ledPin = 13;
 
 //#include "pitches.h"
 #include <Servo.h>
@@ -25,11 +26,12 @@ void setup() {
   lcd.begin(16, 2);                             //Grösse des Display's festlegen
   myServo.attach(7);                            //den Servo anhängen
   pinMode(laserPin, OUTPUT);                    //der Laser Pin, auf digital Pin 6
+  pinMode(ledPin, OUTPUT);                      //der LED Oin, auf digital Pin 13
 }
 
 int lastToneHeightPlayed = 0;                   //die zuletzt gespielte Höhe
 void loop() {
-  //    partyTime();                              //wird nicht verwendet, da LED's nicht in Verwendung
+  //    partyTime();                            //wird nicht verwendet, da LED's nicht in Verwendung
   if (lastToneHeightPlayed != getTone()) {      //Wenn die zuletzt gespielte Höhe sich von der neuen unterscheidet (Der Potentiometer gedreht wurde)
     lastToneHeightPlayed = getTone();           //Wird die Höhe angepasst.
     String toPrint = "Tonhoehe: ";
@@ -46,6 +48,9 @@ void loop() {
   if (changed != 0) {
     doDaDance(changed);                         //Den Servo drehen
     tone(5, spielen(changed, toneToPlay), 100); //Den Ton spielen
+    digitalWrite(ledPin, HIGH);                 //die LED zum leuchten bringen
+  }else{
+    digitalWrite(ledPin, LOW);                  //die LED wieder aus schalten
   }
 }
 
