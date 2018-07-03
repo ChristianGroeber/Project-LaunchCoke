@@ -37,7 +37,6 @@ void loop() {
     String toPrint = "Tonhoehe: ";
     toPrint += lastToneHeightPlayed;            //Was auf dem Bildschirm ausgegeben wird
     lcd.clear();                                //Den LCD clearen
-    lcd.println("Lautsprecher");
     lcd.println(toPrint);                       //Auf dem Bildschirm ausgeben
     Serial.println("Lautsprecher");
     Serial.println(toPrint);                    //Auf dem Serial Monitor ausgeben
@@ -47,7 +46,7 @@ void loop() {
   int changed = getChanged();                   //Der zu spielende Ton
   if (changed != 0) {
     doDaDance(changed);                         //Den Servo drehen
-    tone(5, spielen(changed, toneToPlay), 100); //Den Ton spielen
+    tone(10, spielen(changed, toneToPlay), 100); //Den Ton spielen
     digitalWrite(ledPin, HIGH);                 //die LED zum leuchten bringen
   }else{
     digitalWrite(ledPin, LOW);                  //die LED wieder aus schalten
